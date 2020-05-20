@@ -1,0 +1,31 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/restaurant?characterEncoding=UTF-8&useSSL=false
+
+  jpa:
+    show-sql: true
+    open-in-view: false
+
+  freemarker:
+    cache: false
+    suffix: .ftl
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+
+wechat:
+  mpAppId: wx2f05426892364fcc
+  mpAppSecret: 6bf43f2f17c9ad8ee0174d8c6c49e919
+  #微信模板消息模板id
+  templateId:
+    orderStatus: s4Wvwt36Uz_FHQKYaydUUMtFyQJIHneVdjQTpEjbT5A
+
+project-url:
+  webSocketUrl: 121.41.3.235:8080
+  wechatMpAuthorize: http://121.41.3.235:8080
+  imagesResourceLocationsUrl: file:/home/images/
+  imagesRealLocationsUrl: /home/images/
