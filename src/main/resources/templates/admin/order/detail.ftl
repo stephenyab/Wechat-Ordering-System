@@ -239,16 +239,24 @@
                                     </div>
                                     <hr>
 
+                                    <#if orderDTO.getOrderStatusEnum().message != "已取消">
+                                        <#if orderDTO.getOrderStatusEnum().message !="完结">
+                                            <#if orderDTO.getPayStatusEnum().message == "支付成功">
+                                                <button class="am-btn am-btn-primary">
+                                                    <a style="color: white"
+                                                       href="/admin/order/finish?orderId=${orderDTO.getOrderId()}">完结订单</a>
+                                                </button>
+                                            </#if>
+                                        </#if>
+                                    </#if>
+
                                     <#if orderDTO.getOrderStatusEnum().message == "新订单">
-                                        <button class="am-btn am-btn-primary">
-                                            <a style="color: white"
-                                               href="/admin/order/finish?orderId=${orderDTO.getOrderId()}">完结订单</a>
-                                        </button>
                                         <button class="am-btn am-btn-danger">
                                             <a style="color: white"
                                                href="/admin/order/cancel?orderId=${orderDTO.getOrderId()}">取消订单</a>
                                         </button>
                                     </#if>
+
                                 </form>
                             </div>
 

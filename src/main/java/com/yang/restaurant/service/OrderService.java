@@ -1,6 +1,7 @@
 package com.yang.restaurant.service;
 
 import com.yang.restaurant.dto.OrderDTO;
+import com.yang.restaurant.entity.OrderDetail;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -40,12 +41,6 @@ public interface OrderService {
     //查询本月完结订单
     List<OrderDTO> findAllFinishThisMonth(Date start, Date end);
 
-    //查询本周所有订单
-    List<OrderDTO> findAllThisWeek(Date start, Date end);
-
-    //查询本周完结订单
-    List<OrderDTO> findAllFinishThisWeek(Date start, Date end);
-
     //通过订单状态和支付状态查询订单列表
     List<OrderDTO> findAllByOrderStatusAndPayStatus(Integer orderStatus, Integer payStatus);
 
@@ -60,6 +55,8 @@ public interface OrderService {
 
     //完结订单
     OrderDTO finish(OrderDTO orderDTO);
+
+    OrderDTO adminFinish(OrderDTO orderDTO);
 
     //支付订单
     OrderDTO paid(OrderDTO orderDTO);

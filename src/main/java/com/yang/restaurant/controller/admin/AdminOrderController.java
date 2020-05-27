@@ -126,7 +126,7 @@ public class AdminOrderController {
                                Map<String, Object> map) {
         try {
             OrderDTO orderDTO = orderService.findOne(orderId);
-            orderService.finish(orderDTO);
+            orderService.adminFinish(orderDTO);
         } catch (CommonException e) {
             log.error("【卖家端完结订单】发生异常{}", e);
             map.put("msg", e.getMessage());

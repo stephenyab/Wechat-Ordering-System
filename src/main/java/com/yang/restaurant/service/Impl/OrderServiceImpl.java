@@ -170,22 +170,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDTO> findAllThisWeek(Date start, Date end) {
-        List<OrderMaster> orderMasterList = orderMasterRepository.findAllByCreateTimeBetween(start, end);
-        List<OrderDTO> orderDTOList = OrderMaster2OrderDTOConverter.convert(orderMasterList);
-
-        return orderDTOList;
-    }
-
-    @Override
-    public List<OrderDTO> findAllFinishThisWeek(Date start, Date end) {
-        List<OrderMaster> orderMasterList = orderMasterRepository.findAllByOrderStatusAndCreateTimeBetween(OrderStatusEnum.FINISH.getCode(), start, end);
-        List<OrderDTO> orderDTOList = OrderMaster2OrderDTOConverter.convert(orderMasterList);
-
-        return orderDTOList;
-    }
-
-    @Override
     public List<OrderDTO> findAllByOrderStatusAndPayStatus(Integer orderStatus, Integer payStatus) {
         List<OrderMaster> orderMasterList = orderMasterRepository.findByOrderStatusAndPayStatus(orderStatus, payStatus);
         List<OrderDTO> orderDTOList = OrderMaster2OrderDTOConverter.convert(orderMasterList);
@@ -243,6 +227,35 @@ public class OrderServiceImpl implements OrderService {
         if (!orderDTO.getOrderStatus().equals(OrderStatusEnum.SENDING.getCode())) {
             log.error("【完结订单】订单状态不正确，orderID={}，orderStatus={}", orderDTO.getOrderId(), orderDTO.getOrderStatus());
             throw new CommonException(ResultEnum.ORDER_STATUS_ERROR);
+        }
+
+        //修改订单状态
+        orderDTO.setOrderStatus(OrderStatusEnum.FINISH.getCode());
+        OrderMaster orderMaster = new OrderMaster();
+        BeanUtils.copyProperties(orderDTO, orderMaster);
+        OrderMaster updateResult = orderMasterRepository.save(orderMaster);
+
+        if (updateResult == null) {
+            log.error("【完结订单】更新失败，orderMaster={}", orderMaster);
+            throw new CommonException(ResultEnum.ORDER_UPDATE_FAIL);
+        }
+
+        //订单完结，模板消息推送
+        RestInfoDTO restInfoDTO = restInfoService.findRestInfo();
+        pushMessageService.orderStatus(orderDTO, restInfoDTO);
+
+        return orderDTO;
+    }
+
+    @Override
+    public OrderDTO adminFinish(OrderDTO orderDTO) {
+        //判断订单状态
+        if (orderDTO.getOrderStatus().equals(OrderStatusEnum.CANCEL.getCode()) ||
+                orderDTO.getOrderStatus().equals(OrderStatusEnum.FINISH.getCode())) {
+            if (!orderDTO.getPayStatus().equals(PayStatusEnum.SUCCESS)) {
+                log.error("【完结订单】订单状态不正确，orderID={}，orderStatus={}", orderDTO.getOrderId(), orderDTO.getOrderStatus());
+                throw new CommonException(ResultEnum.ORDER_STATUS_ERROR);
+            }
         }
 
         //修改订单状态
