@@ -38,6 +38,8 @@ public class OrderDTO {
 
     private BigDecimal orderAmount;
 
+    private Integer deskNum;
+
     private Integer orderStatus;
 
     private Integer payStatus;

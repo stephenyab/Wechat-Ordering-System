@@ -88,6 +88,11 @@
                     <div class="food_price">¥ ${orderDTO.getOrderAmount()}</div>
                 </div>
 
+                <div class="invoice">
+                    <div>座位号：</div>
+                    <div class="food_price">${orderDTO.getDeskNum()}</div>
+                </div>
+
                 <ul class="food_list" style="margin-bottom: 0px;">
                     <#list orderDTO.getOrderDetailList() as detailInfo>
                         <li class="food_li">

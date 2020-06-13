@@ -1,6 +1,7 @@
 package com.yang.restaurant.controller.admin;
 
 import com.yang.restaurant.config.ProjectUrl;
+import com.yang.restaurant.constant.DeskConstant;
 import com.yang.restaurant.dto.OrderDTO;
 import com.yang.restaurant.entity.OrderDiscuss;
 import com.yang.restaurant.enums.ResultEnum;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +42,9 @@ public class AdminOrderController {
 
     @Autowired
     private DiscussService discussService;
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     /**
      * @return org.springframework.web.servlet.ModelAndView
@@ -75,6 +80,7 @@ public class AdminOrderController {
         try {
             OrderDTO orderDTO = orderService.findOne(orderId);
             orderService.cancel(orderDTO);
+            redisTemplate.opsForValue().set(String.format(DeskConstant.DESK_PREFIX, orderDTO.getDeskNum()), String.valueOf(0));
         } catch (CommonException e) {
             log.error("【卖家端取消订单】发生异常{}", e);
             map.put("msg", e.getMessage());
@@ -127,6 +133,7 @@ public class AdminOrderController {
         try {
             OrderDTO orderDTO = orderService.findOne(orderId);
             orderService.adminFinish(orderDTO);
+            redisTemplate.opsForValue().set(String.format(DeskConstant.DESK_PREFIX, orderDTO.getDeskNum()), String.valueOf(0));
         } catch (CommonException e) {
             log.error("【卖家端完结订单】发生异常{}", e);
             map.put("msg", e.getMessage());

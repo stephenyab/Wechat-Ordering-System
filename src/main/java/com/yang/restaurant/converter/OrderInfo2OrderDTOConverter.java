@@ -24,7 +24,7 @@ import java.util.List;
 @Slf4j
 public class OrderInfo2OrderDTOConverter {
 
-    public static OrderDTO convert(Cookie carCookie, UserInfo buyerInfo) {
+    public static OrderDTO convert(Cookie carCookie, Cookie deskCookie, UserInfo buyerInfo) {
         //设置下订单的用户信息
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setBuyerName(buyerInfo.getUserName());
@@ -50,6 +50,7 @@ public class OrderInfo2OrderDTOConverter {
             log.info("JSON解析出现错误");
         }
 
+        orderDTO.setDeskNum(Integer.valueOf(deskCookie.getValue()));
         orderDTO.setOrderDetailList(orderDetailList);
 
         return orderDTO;

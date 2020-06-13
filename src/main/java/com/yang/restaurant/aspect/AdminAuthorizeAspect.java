@@ -1,6 +1,7 @@
 package com.yang.restaurant.aspect;
 
 import com.yang.restaurant.dto.RestInfoDTO;
+import com.yang.restaurant.exception.CommonException;
 import com.yang.restaurant.exception.RestInfoEmptyException;
 import com.yang.restaurant.service.RestInfoService;
 import com.yang.restaurant.utils.AuthorizeUtil;
@@ -46,8 +47,12 @@ public class AdminAuthorizeAspect {
 
     @After("restInfoVerify()")
     public void doRestInfoVerify() {
-        RestInfoDTO restInfoDTO = restInfoService.findRestInfo();
-        if (restInfoDTO == null || restInfoDTO.isEmpty()) {
+        try{
+            RestInfoDTO restInfoDTO = restInfoService.findRestInfo();
+            if (restInfoDTO == null || restInfoDTO.isEmpty()) {
+                throw new RestInfoEmptyException();
+            }
+        }catch (CommonException e){
             throw new RestInfoEmptyException();
         }
 

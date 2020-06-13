@@ -1,6 +1,7 @@
 package com.yang.restaurant.controller.waiter;
 
 import com.yang.restaurant.constant.CookieConstant;
+import com.yang.restaurant.constant.DeskConstant;
 import com.yang.restaurant.constant.RedisConstant;
 import com.yang.restaurant.dto.OrderDTO;
 import com.yang.restaurant.enums.OrderStatusEnum;
@@ -102,6 +103,7 @@ public class WaiterSendingController {
     public String cooking(@RequestParam("orderId") String orderId) {
         OrderDTO orderDTO = orderService.findOne(orderId);
         orderService.finish(orderDTO);
+        redisTemplate.opsForValue().set(String.format(DeskConstant.DESK_PREFIX, orderDTO.getDeskNum()), String.valueOf(0));
 
         return "redirect:/waiter/send/list";
     }

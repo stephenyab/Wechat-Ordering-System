@@ -18,6 +18,8 @@ public class RestInfoDTO {
 
     private String restAddress;
 
+    private Integer deskNum;
+
     private String restDescription;
 
     private String restAnnouncement;

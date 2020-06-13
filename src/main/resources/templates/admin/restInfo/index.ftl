@@ -203,7 +203,16 @@
                                             <input type="text" id="product-description" name="restAddress"
                                                    placeholder="地址"
                                                    value="${(restInfo.getRestAddress())!""}">
-                                            </textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <label for="product-description" class="am-u-sm-3 am-form-label">餐厅座位数 /
+                                            DeskNum</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" id="product-description" name="deskNum"
+                                                   placeholder="餐厅座位数"
+                                                   value="${(restInfo.getDeskNum())!""}">
                                         </div>
                                     </div>
 
@@ -214,7 +223,6 @@
                                             <input type="text" id="product-description" name="restDescription"
                                                    placeholder="描述"
                                                    value="${(restInfo.getRestDescription())!""}">
-                                            </textarea>
                                         </div>
                                     </div>
 
@@ -225,7 +233,6 @@
                                             <input type="text" id="product-description" name="restAnnouncement"
                                                    placeholder="公告"
                                                    value="${(restInfo.getRestAnnouncement())!""}">
-                                            </textarea>
                                         </div>
                                     </div>
 

@@ -1,9 +1,12 @@
 package com.yang.restaurant.controller.admin;
 
 import com.yang.restaurant.dto.RestInfoDTO;
+import com.yang.restaurant.exception.CommonException;
 import com.yang.restaurant.form.RestInfoForm;
 import com.yang.restaurant.service.RestInfoService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,12 +24,16 @@ import java.util.Map;
  * @Date 2020/5/12 13:49
  * @Version 1.0
  */
+@Slf4j
 @Controller
 @RequestMapping("/admin/restInfo")
 public class AdminRestInfoController {
 
     @Autowired
     private RestInfoService restInfoService;
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     /**
      * @return org.springframework.web.servlet.ModelAndView
@@ -37,7 +44,12 @@ public class AdminRestInfoController {
      **/
     @GetMapping("/index")
     public ModelAndView index(Map<String, Object> map) {
-        RestInfoDTO restInfoDTO = restInfoService.findRestInfo();
+        RestInfoDTO restInfoDTO = null;
+        try {
+            restInfoDTO = restInfoService.findRestInfo();
+        } catch (CommonException e) {
+            log.warn("餐厅信息不存在");
+        }
 
         map.put("restInfo", restInfoDTO);
 
@@ -68,6 +80,7 @@ public class AdminRestInfoController {
         }
 
         restInfoService.save(form);
+        redisTemplate.opsForValue().set("deskExist", "false");
 
         map.put("msg", "餐厅信息更新成功");
         map.put("url", "index");

@@ -186,6 +186,7 @@
                                                 <th class="table-author am-hide-sm-only">手机号</th>
                                                 <th class="table-author am-hide-sm-only">地址</th>
                                                 <th class="table-author am-hide-sm-only">金额</th>
+                                                <th class="table-author am-hide-sm-only">座位号</th>
                                                 <th class="table-author am-hide-sm-only">订单状态</th>
                                                 <th class="table-author am-hide-sm-only">支付状态</th>
                                                 <th class="table-date am-hide-sm-only">创建时间</th>
@@ -201,6 +202,7 @@
                                                     <td>${orderDTO.buyerPhone!""}</td>
                                                     <td>${orderDTO.buyerAddress}</td>
                                                     <td>${orderDTO.orderAmount}</td>
+                                                    <td>${orderDTO.deskNum}</td>
                                                     <td>${orderDTO.getOrderStatusEnum().getMessage()}</td>
                                                     <td>${orderDTO.getPayStatusEnum().getMessage()}</td>
                                                     <td style="width: 220px;">${orderDTO.createTime}</td>

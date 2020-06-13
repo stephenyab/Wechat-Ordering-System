@@ -86,7 +86,7 @@
         </div>
 
         <div style="height: 55%; width: 100%;">
-            <a href="/customer/product/list">
+            <a href="/customer/desk/getAllDesk">
                 <div style="width: 50%; height: 40%;float: left; min-height: 180px">
                     <div style="width: 100%;text-align: center;">
                         <img style="width: 50%; height: 50%; margin-top: 20px"

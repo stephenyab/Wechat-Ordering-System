@@ -28,4 +28,6 @@ public class RestInfo {
     private String restDescription;
 
     private String restAnnouncement;
+
+    private Integer deskNum;
 }

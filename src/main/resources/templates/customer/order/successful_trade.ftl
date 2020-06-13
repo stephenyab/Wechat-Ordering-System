@@ -61,6 +61,11 @@
                 <div class="food_price">¥ ${orderDetail.getOrderAmount()}</div>
             </div>
 
+            <div class="invoice">
+                <div>座位号：</div>
+                <div class="food_price">${orderDetail.getDeskNum()}</div>
+            </div>
+
             <div class="total_price">合计：<span>¥ ${orderDetail.getOrderAmount()}</span></div>
         </div>
 

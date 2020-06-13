@@ -39,6 +39,7 @@ public class RestInfoServiceImpl implements RestInfoService {
             BeanUtils.copyProperties(restInfoList.get(0), restInfoDTO);
         } catch (IndexOutOfBoundsException e) {
             log.error("餐厅信息不存在");
+            throw new CommonException(ResultEnum.REST_INFO_NOT_EXIST);
         }
 
         return restInfoDTO;

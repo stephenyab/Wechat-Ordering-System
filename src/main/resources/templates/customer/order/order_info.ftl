@@ -60,6 +60,11 @@
                 <div>菜品小计：</div>
                 <div class="food_price">¥ ${orderInfo.getOrderAmount()}</div>
             </div>
+
+            <div class="invoice total">
+                <div>座位号：</div>
+                <div class="food_price">${orderInfo.getDeskNum()}</div>
+            </div>
             <#--            <div class="invoice">-->
             <#--                <div>餐具小计：</div>-->
             <#--                <div class="food_price">¥ 4</div>-->

@@ -1,6 +1,7 @@
 package com.yang.restaurant.controller.customer;
 
 import com.yang.restaurant.constant.CookieConstant;
+import com.yang.restaurant.constant.DeskConstant;
 import com.yang.restaurant.constant.RedisConstant;
 import com.yang.restaurant.converter.OrderInfo2OrderDTOConverter;
 import com.yang.restaurant.dto.OrderDTO;
@@ -81,6 +82,15 @@ public class CustomerOrderController {
                                Map<String, Object> map) {
         //从Cookie中获取到购物车信息
         Cookie carCookie = CookieUtil.get(request, "car");
+        //从Cookie中获取到座位号
+        Cookie deskCookie = CookieUtil.get(request, "deskNum");
+
+        if ("0".equals(deskCookie.getValue())) {
+            map.put("msg", "未选择餐厅座位号");
+            map.put("url", "/customer/index");
+
+            return new ModelAndView("/customer/common/error", map);
+        }
 
         //从Cookie中获取到Customer的信息,然后从Redis中取出用户的openid
         Cookie userInfo = CookieUtil.get(request, CookieConstant.USER);
@@ -88,12 +98,16 @@ public class CustomerOrderController {
         UserInfo buyerInfo = userService.findUserByOpenid(openid);
 
         //获得订单类
-        OrderDTO orderDTO = OrderInfo2OrderDTOConverter.convert(carCookie, buyerInfo);
+        OrderDTO orderDTO = OrderInfo2OrderDTOConverter.convert(carCookie, deskCookie, buyerInfo);
 
         OrderDTO createResult = orderService.create(orderDTO);
 
         //清空购物车
         CookieUtil.set(response, "car", null, 0);
+        //清除座位号
+        CookieUtil.set(response, "deskNum", "0", 0);
+        //更改座位号状态
+        redisTemplate.opsForValue().set(String.format(DeskConstant.DESK_PREFIX, deskCookie.getValue()), String.valueOf(1));
 
         log.info("结果：{}", createResult.getOrderId());
 
@@ -129,6 +143,7 @@ public class CustomerOrderController {
         try {
             OrderDTO orderDTO = orderService.findOne(orderId);
             orderService.cancel(orderDTO);
+            redisTemplate.opsForValue().set(String.format(DeskConstant.DESK_PREFIX, orderDTO.getDeskNum()), String.valueOf(0));
         } catch (CommonException e) {
             log.error("【卖家端取消订单】发生异常{}", e);
             throw new UserException(e.getCode(), e.getMessage());

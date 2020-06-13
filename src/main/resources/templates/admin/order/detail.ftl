@@ -192,6 +192,15 @@
                                         </div>
                                     </div>
 
+                                    <div class="am-form-group">
+                                        <label for="order-master-amount" class="am-u-sm-3 am-form-label">座位号 /
+                                            DeskNum</label>
+                                        <div class="am-u-sm-9">
+                                            <input disabled="disabled" type="text" id="order-master-deskNum"
+                                                   value="${(orderDTO.getDeskNum())!""}">
+                                        </div>
+                                    </div>
+
                                     <#if orderDTO.getOrderStatusEnum().getMessage() == "完结">
                                         <div class="am-form-group">
                                             <label for="user-intro" class="am-u-sm-3 am-form-label">评价 / Discuss</label>

@@ -39,6 +39,8 @@ public class OrderMaster {
 
     private BigDecimal orderAmount;
 
+    private Integer deskNum;
+
     /**
      * @Description 0为未评价，1为已评价
      * @Date 2020/4/4 19:08
